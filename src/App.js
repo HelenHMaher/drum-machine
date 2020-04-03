@@ -67,18 +67,45 @@ const keyArr = [
   }
 ];
 
-function DrumPad() {
-  return (
-    <div className="drum-pad" onClick={this.playSound} id={this.props.clipID}>
-      <audio
-        className="sound"
-        id={this.props.keyLetter}
-        src={this.props.sound}
-      ></audio>
-      {this.props.keyLetter}
-    </div>
-  );
+class SingleDrumPad extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.playSound = this.playSound.bind(this);
+  }
+  handleKeyPress(event) {
+    if (event.keyNumber === this.props.keyNumber) {
+      this.playSound();
+    }
+  }
+  playSound(event) {
+    const sound = document.getElementById(this.props.keyNumber);
+    sound.play();
+  }
+  render() {
+    return (
+      <div
+        className="drum-pad"
+        id={this.props.clipname}
+        onClick={this.playSound}
+      >
+        <audio src={this.props.url} id={this.props.keyNumber}></audio>
+        {this.props.keyLetter}
+      </div>
+    );
+  }
 }
+
+const drumPadSet = keyArr.map((object, i) => {
+  return (
+    <SingleDrumPad
+      keyLetter={keyArr[i].keyLetter}
+      keyNumber={keyArr[i].keyNumber}
+      url={keyArr[i].url}
+      clipname={keyArr[i].id}
+    />
+  );
+});
 
 function App() {
   return (
@@ -87,9 +114,7 @@ function App() {
         <div> This is my drum machine!!!</div>
       </header>
       <div id="display"></div>
-      <div id="drum-pad">
-        <DrumPad />
-      </div>
+      <div id="drum-pad">{drumPadSet}</div>
     </div>
   );
 }
