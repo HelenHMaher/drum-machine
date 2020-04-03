@@ -18,7 +18,7 @@ const keyArr = [
   },
   {
     keyNumber: 69,
-    keyLetter: "W",
+    keyLetter: "E",
     id: "buizen-bell-E",
     url:
       "https://sampleswap.org/samples-ghost/INSTRUMENTS%20(SINGLE%20SAMPLES)/Bells/793[kb]buizen-bell-E.aif.mp3"
@@ -67,20 +67,31 @@ const keyArr = [
   }
 ];
 
+const Display = props => {
+  return <div id="display">{props.clipname}</div>;
+};
+
 class SingleDrumPad extends React.Component {
   constructor(props) {
     super(props);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.playSound = this.playSound.bind(this);
   }
+  componentDidMount() {
+    document.addEventListener("keydown", this.handleKeyPress);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleKeyPress);
+  }
   handleKeyPress(event) {
-    if (event.keyNumber === this.props.keyNumber) {
+    if (event.keyCode === this.props.keyNumber) {
       this.playSound();
     }
   }
   playSound(event) {
-    const sound = document.getElementById(this.props.keyNumber);
+    const sound = document.getElementById(this.props.keyLetter);
     sound.play();
+    this.props.updateDisplay(this.props.clipname);
   }
   render() {
     return (
@@ -89,34 +100,60 @@ class SingleDrumPad extends React.Component {
         id={this.props.clipname}
         onClick={this.playSound}
       >
-        <audio src={this.props.url} id={this.props.keyNumber}></audio>
+        <audio
+          src={this.props.url}
+          id={this.props.keyLetter}
+          className="clip"
+        ></audio>
         {this.props.keyLetter}
       </div>
     );
   }
 }
 
-const drumPadSet = keyArr.map((object, i) => {
-  return (
-    <SingleDrumPad
-      keyLetter={keyArr[i].keyLetter}
-      keyNumber={keyArr[i].keyNumber}
-      url={keyArr[i].url}
-      clipname={keyArr[i].id}
-    />
-  );
-});
+class DrumPadSet extends React.Component {
+  render() {
+    const drumPadSet = keyArr.map((object, i) => {
+      return (
+        <SingleDrumPad
+          keyLetter={keyArr[i].keyLetter}
+          keyNumber={keyArr[i].keyNumber}
+          url={keyArr[i].url}
+          clipname={keyArr[i].id}
+          updateDisplay={this.props.updateDisplay}
+        />
+      );
+    });
+    return drumPadSet;
+  }
+}
 
-function App() {
-  return (
-    <div id="drum-machine">
-      <header className="App-header">
-        <div> This is my drum machine!!!</div>
-      </header>
-      <div id="display"></div>
-      <div id="drum-pad">{drumPadSet}</div>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      display: ""
+    };
+    this.updateDisplay = this.updateDisplay.bind(this);
+  }
+  updateDisplay(clipname) {
+    this.setState({
+      display: clipname
+    });
+  }
+  render() {
+    return (
+      <div id="drum-machine">
+        <header className="App-header">
+          <div> This is my drum machine!!!</div>
+        </header>
+        <Display clipname={this.state.display} />
+        <div id="drum-pad">
+          <DrumPadSet updateDisplay={this.updateDisplay} />
+        </div>
+      </div>
+    );
+  }
 }
 
 export default App;
