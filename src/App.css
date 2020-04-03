@@ -1,3 +1,12 @@
+:root {
+  --darkMain: black;
+  --lightMain: white;
+  --darkAccent: grey;
+  --lightAccent: pink;
+  --warning: orange;
+}
+
 .App {
   text-align: center;
+  background: var(--lightAccent);
 }

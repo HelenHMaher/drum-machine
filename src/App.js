@@ -67,15 +67,51 @@ const keyArr = [
   }
 ];
 
+const pressStyles = {
+  backgroundColor: "orange"
+};
+
+const defaultStyles = {
+  backgroundColor: "black"
+};
+
+const offStyles = {
+  color: "grey"
+};
+
+const onStyles = {
+  color: "white"
+};
+
 const Display = props => {
   return <div id="display">{props.clipname}</div>;
+};
+
+const PowerButton = props => {
+  if (props.power === true) {
+    return (
+      <button id="power-button" onClick={props.onClick}>
+        OFF
+      </button>
+    );
+  } else {
+    return (
+      <button id="power-button" onClick={props.onClick}>
+        ON
+      </button>
+    );
+  }
 };
 
 class SingleDrumPad extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      style: defaultStyles
+    };
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.playSound = this.playSound.bind(this);
+    this.styleChange = this.styleChange.bind(this);
   }
   componentDidMount() {
     document.addEventListener("keydown", this.handleKeyPress);
@@ -88,10 +124,22 @@ class SingleDrumPad extends React.Component {
       this.playSound();
     }
   }
+  styleChange() {
+    this.state.style === defaultStyles
+      ? this.setState({ style: pressStyles })
+      : this.setState({ style: defaultStyles });
+  }
   playSound(event) {
-    const sound = document.getElementById(this.props.keyLetter);
-    sound.play();
-    this.props.updateDisplay(this.props.clipname);
+    if (this.props.power === true) {
+      const sound = document.getElementById(this.props.keyLetter);
+      sound.play();
+      this.props.updateDisplay(this.props.clipname);
+      this.styleChange();
+      setTimeout(() => this.styleChange(), 100);
+    } else {
+      this.props.updateDisplay("Turn Me On");
+      setTimeout(() => this.props.updateDisplay(""), 500);
+    }
   }
   render() {
     return (
@@ -99,6 +147,7 @@ class SingleDrumPad extends React.Component {
         className="drum-pad"
         id={this.props.clipname}
         onClick={this.playSound}
+        style={this.state.style}
       >
         <audio
           src={this.props.url}
@@ -121,6 +170,7 @@ class DrumPadSet extends React.Component {
           url={keyArr[i].url}
           clipname={keyArr[i].id}
           updateDisplay={this.props.updateDisplay}
+          power={this.props.power}
         />
       );
     });
@@ -132,24 +182,41 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      display: ""
+      power: true,
+      display: "",
+      style: onStyles
     };
     this.updateDisplay = this.updateDisplay.bind(this);
+    this.handlePowerClick = this.handlePowerClick.bind(this);
   }
   updateDisplay(clipname) {
     this.setState({
       display: clipname
     });
   }
+  handlePowerClick(event) {
+    if (this.state.power === true) {
+      this.setState({ power: false, display: "", style: offStyles });
+    } else {
+      this.setState({ power: true, style: onStyles });
+    }
+  }
   render() {
     return (
-      <div id="drum-machine">
+      <div className="App" id="drum-machine" style={this.state.style}>
         <header className="App-header">
           <div> This is my drum machine!!!</div>
         </header>
-        <Display clipname={this.state.display} />
+        <Display clipname={this.state.display} power={this.state.power} />
         <div id="drum-pad">
-          <DrumPadSet updateDisplay={this.updateDisplay} />
+          <DrumPadSet
+            updateDisplay={this.updateDisplay}
+            power={this.state.power}
+          />
+          <PowerButton
+            power={this.state.power}
+            onClick={this.handlePowerClick}
+          />
         </div>
       </div>
     );
