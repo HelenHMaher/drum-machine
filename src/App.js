@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import variables from "./_App.scss";
 
 const keyArr = [
   {
@@ -68,19 +68,19 @@ const keyArr = [
 ];
 
 const pressStyles = {
-  backgroundColor: "orange"
+  backgroundColor: variables.warning
 };
 
 const defaultStyles = {
-  backgroundColor: "black"
+  backgroundColor: variables.darkMain
 };
 
 const offStyles = {
-  color: "grey"
+  color: variables.darkAccent
 };
 
 const onStyles = {
-  color: "white"
+  color: variables.lightMain
 };
 
 const Display = props => {

@@ -1,0 +1,18 @@
+$darkMain: black;
+$lightMain: white;
+$darkAccent: grey;
+$lightAccent: pink;
+$warning: orange;
+
+:export {
+  darkMain: $darkMain;
+  lightMain: $lightMain;
+  darkAccent: $darkAccent;
+  lightAccent: $lightAccent;
+  warning: $warning;
+}
+
+.App {
+  text-align: center;
+  background: $lightAccent;
+}
