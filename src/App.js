@@ -149,12 +149,12 @@ class SingleDrumPad extends React.Component {
         onClick={this.playSound}
         style={this.state.style}
       >
+        {this.props.keyLetter}
         <audio
           src={this.props.url}
           id={this.props.keyLetter}
           className="clip"
         ></audio>
-        {this.props.keyLetter}
       </div>
     );
   }
@@ -203,16 +203,20 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className="App" id="drum-machine" style={this.state.style}>
-        <header className="App-header">
-          <div> This is my drum machine!!!</div>
+      <div className="app" id="drum-machine" style={this.state.style}>
+        <header className="app-header">
+          <p> Drum Machine</p>
         </header>
-        <Display clipname={this.state.display} power={this.state.power} />
-        <div id="drum-pad">
+        <div className="app-display">
+          <Display clipname={this.state.display} power={this.state.power} />
+        </div>
+        <div id="drum-pad" className="drum-pad-set">
           <DrumPadSet
             updateDisplay={this.updateDisplay}
             power={this.state.power}
           />
+        </div>
+        <div className="power-button">
           <PowerButton
             power={this.state.power}
             onClick={this.handlePowerClick}

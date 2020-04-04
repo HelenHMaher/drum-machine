@@ -1,8 +1,11 @@
-$darkMain: black;
-$lightMain: white;
-$darkAccent: grey;
-$lightAccent: pink;
-$warning: orange;
+$darkMain: #000000;
+$lightMain: #ffffff;
+$darkAccent: #ffde22;
+$lightAccent: #ff8928;
+$warning: #ff414e;
+
+$padWidth: 120px;
+$padHeight: 120px;
 
 :export {
   darkMain: $darkMain;
@@ -12,7 +15,53 @@ $warning: orange;
   warning: $warning;
 }
 
-.App {
+#root {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  background: $darkAccent;
+}
+
+.app {
   text-align: center;
   background: $lightAccent;
+  width: 700px;
+  display: block;
+  align-items: center;
+  .app-display {
+    height: 20px;
+    width: 200px;
+    margin: 0 auto;
+    background: darken($lightAccent, 10%);
+  }
+  .power-button {
+    margin: 20px;
+  }
+  .drum-pad-set {
+    background: darken($lightAccent, 10%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin: 10px auto;
+    width: $padWidth * 3 + 40;
+    height: $padHeight * 3 + 40;
+    .drum-pad {
+      width: $padWidth;
+      height: $padHeight;
+      cursor: pointer;
+      margin: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .app {
+    transform: scale(0.6);
+  }
 }
