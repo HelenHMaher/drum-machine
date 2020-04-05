@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import variables from "../_App.scss";
 
 const pressStyles = {
-  backgroundColor: variables.warning
+  backgroundColor: variables.warning,
 };
 
 const defaultStyles = {
-  backgroundColor: variables.darkMain
+  backgroundColor: variables.darkMain,
 };
 
 /**
@@ -33,7 +33,7 @@ console.log("power is:", power);
  * TODO: Read and understand this page and the next pages until 'Rules of Hooks'
  * * https://reactjs.org/docs/hooks-overview.html
  */
-export const SingleDrumPad = props => {
+export const SingleDrumPad = (props) => {
   const [style, setStyle] = useState(defaultStyles);
 
   // destucturing props
@@ -139,5 +139,5 @@ SingleDrumPad.propTypes = {
   url: PropTypes.string.isRequired,
   clipname: PropTypes.string.isRequired,
   updateDisplay: PropTypes.func.isRequired,
-  power: PropTypes.bool.isRequired
+  power: PropTypes.bool.isRequired,
 };
