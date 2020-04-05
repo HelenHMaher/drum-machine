@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import variables from "../_App.scss";
 
@@ -10,35 +10,17 @@ const defaultStyles = {
   backgroundColor: variables.darkMain,
 };
 
-/**
- * TODO: Remove when understood/practiced
- * Example of descructuring, relevant for descructuring props
- */
-const myProps = { someFunc: "sting", power: true };
-const { power } = myProps;
-console.log("power is:", power);
-
-/**
- * New Refactoring of SingleDrumPad using hooks.
- *
- * You can use different syntax to write 'function components' not to be
- * confused with 'stateless functional components' as they can now contain
- * state. Below I am using arrow functions as I think its what you may be most
- * familiar with.
- *
- * One drawback is that you cannot default export it, you first need to export
- * the constant function SingleDrumPad and then default export it as the bottom
- * of the file.
- *
- * TODO: Read and understand this page and the next pages until 'Rules of Hooks'
- * * https://reactjs.org/docs/hooks-overview.html
- */
 export const SingleDrumPad = (props) => {
+  const [styleToggle, setStyleToggle] = useState(true);
+
   const [style, setStyle] = useState(defaultStyles);
 
-  // destucturing props
   const { keyLetter, keyNumber, url, clipname, updateDisplay, power } = props;
 
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
+    return document.removeEventListener("keydown", handleKeyPress);
+  });
   /**
    * TODO: refactor to use react hooks
    * This will be your biggest challenge and require you to read and understand the
@@ -61,13 +43,26 @@ export const SingleDrumPad = (props) => {
    * but I think you prefer arrow functions.
    */
   const styleChange = () => {
+    console.log("style is: ", style);
     style === defaultStyles ? setStyle(pressStyles) : setStyle(defaultStyles);
   };
-  //   styleChange() {
-  //     this.state.style === defaultStyles
-  //       ? this.setState({ style: pressStyles })
-  //       : this.setState({ style: defaultStyles });
-  //   }
+
+  const playSound = (e) => {
+    if (power === true) {
+      const sound = document.getElementById(keyLetter);
+      sound.play();
+      updateDisplay(clipname);
+      setStyleToggle(!styleToggle);
+      setTimeout(() => setStyleToggle(!styleToggle));
+      // setTimeout(() => {
+      //   console.log("and now here");
+      //   styleChange();
+      // }, 2000);
+    } else {
+      updateDisplay("Turn Me On");
+      setTimeout(() => updateDisplay(""), 500);
+    }
+  };
 
   /**
    * TODO: try refactoring this similar to the above styleChange function
@@ -87,7 +82,11 @@ export const SingleDrumPad = (props) => {
   //     }
   //   }
   // }
-
+  function handleKeyPress(e) {
+    if (e.keyCode === keyNumber) {
+      playSound();
+    }
+  }
   /**
    * TODO: refactor this function as well
    */
@@ -96,13 +95,24 @@ export const SingleDrumPad = (props) => {
   //       this.playSound();
   //     }
   //   }
-
-  /**
+  return (
+    <div
+      className="drum-pad"
+      id={clipname}
+      onClick={playSound}
+      style={styleToggle ? defaultStyles : pressStyles}
+    >
+      {keyLetter}
+      <audio src={url} id={keyLetter} className="clip"></audio>
+    </div>
+  );
+};
+/**
    * TODO: refactor to no longer use 'props.something'
    * TODO: recator to no longer use 'this.something'
    * TODO: refactor to no longer use 'this.state.something'
    * TODO: understand why
-   */
+
   return (
     <div
       className="drum-pad"
@@ -119,8 +129,6 @@ export const SingleDrumPad = (props) => {
     </div>
   );
 };
-
-/**
  * Here you can see what I mean by having to export SingleDrumPad as a default
  * on a different line
  */
