@@ -5,11 +5,11 @@ import DrumPadSet from "./DrumPadSet";
 import { Display } from "./Display";
 
 const offStyles = {
-  color: variables.darkAccent
+  color: variables.darkMain,
 };
 
 const onStyles = {
-  color: variables.lightMain
+  color: variables.lightMain,
 };
 
 class App extends React.Component {
@@ -18,14 +18,14 @@ class App extends React.Component {
     this.state = {
       power: true,
       display: "",
-      style: onStyles
+      style: onStyles,
     };
     this.updateDisplay = this.updateDisplay.bind(this);
     this.handlePowerClick = this.handlePowerClick.bind(this);
   }
   updateDisplay(clipname) {
     this.setState({
-      display: clipname
+      display: clipname,
     });
   }
   handlePowerClick(event) {
@@ -39,7 +39,7 @@ class App extends React.Component {
     return (
       <div className="app" id="drum-machine" style={this.state.style}>
         <header className="app-header">
-          <p> Drum Machine</p>
+          <h2> Drum Machine</h2>
         </header>
         <div className="app-display">
           <Display clipname={this.state.display} power={this.state.power} />
@@ -50,12 +50,7 @@ class App extends React.Component {
             power={this.state.power}
           />
         </div>
-        <div className="power-button">
-          <PowerButton
-            power={this.state.power}
-            onClick={this.handlePowerClick}
-          />
-        </div>
+        <PowerButton power={this.state.power} onClick={this.handlePowerClick} />
       </div>
     );
   }

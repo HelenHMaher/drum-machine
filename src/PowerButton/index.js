@@ -1,17 +1,19 @@
 import React from "react";
 
-export const PowerButton = props => {
+export const PowerButton = (props) => {
   if (props.power === true) {
+    const OFF = "OFF";
     return (
-      <button id="power-button" onClick={props.onClick}>
-        OFF
-      </button>
+      <div id="power-button" onClick={props.onClick} className="power-button">
+        {OFF}
+      </div>
     );
   } else {
+    const ON = "ON";
     return (
-      <button id="power-button" onClick={props.onClick}>
-        ON
-      </button>
+      <div id="power-button" onClick={props.onClick} className="power-button">
+        {ON}
+      </div>
     );
   }
 };
