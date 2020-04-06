@@ -6,7 +6,9 @@ export const SingleDrumPad = (props) => {
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
-    return document.removeEventListener("keydown", handleKeyPress);
+    return function cleanup() {
+      document.removeEventListener("keydown", handleKeyPress);
+    };
   });
   const playSound = (e) => {
     if (power === true) {
@@ -33,13 +35,6 @@ export const SingleDrumPad = (props) => {
 
 export default SingleDrumPad;
 
-/**
- * PropTypes are used to create warnings in the developer console of chrome if
- * we do not pass them properly to the component requiring them
- *
- * They also act as information to a engineer which props are required and act
- * as documentation when coding.
- */
 SingleDrumPad.propTypes = {
   keyLetter: PropTypes.string.isRequired,
   keyNumber: PropTypes.number.isRequired,
