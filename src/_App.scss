@@ -96,6 +96,11 @@ $padHeight: 120px;
       }
     }
   }
+  .footer {
+    float: right;
+    font-size: 0.7em;
+    margin: 2px 5px;
+  }
 }
 
 @media screen and (max-width: 650px) {

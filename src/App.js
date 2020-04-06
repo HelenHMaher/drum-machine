@@ -51,6 +51,9 @@ class App extends React.Component {
           />
         </div>
         <PowerButton power={this.state.power} onClick={this.handlePowerClick} />
+        <div className="footer" id="footer">
+          Helen Maher 2020
+        </div>
       </div>
     );
   }
